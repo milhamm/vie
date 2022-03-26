@@ -5,24 +5,24 @@ const BOTTOM_NAV_ROUTES = [
     icon: "dashboard",
   },
   {
-    href: "/offers",
+    href: "/forum",
     name: "Forum",
-    icon: "tawaran",
+    icon: "forum",
   },
   {
-    href: "/campaign",
+    href: "/team",
     name: "Team",
-    icon: "campaign",
+    icon: "team",
   },
   {
-    href: "/analytics",
+    href: "/chat",
     name: "Chat",
-    icon: "analytics",
+    icon: "chat",
   },
   {
-    href: "/settings",
+    href: "/profile",
     name: "Profile",
-    icon: "settings",
+    icon: "profile",
   },
 ];
 
