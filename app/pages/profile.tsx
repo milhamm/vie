@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 import DefaultLayout from "components/Layouts/DefaultLayout";
-import { Image } from '@chakra-ui/react'
+import { Image } from "@chakra-ui/react";
 import React from "react";
 
 const Profile = () => {
@@ -14,20 +14,30 @@ const Profile = () => {
         <div className="p-8 flex justify-between">
           <div>
             <h1 className="text-lg font-normal text-[white] mb-1">Halo,</h1>
-            <h1 className="text-xl	 font-semibold text-[white]">Muhammad Memeng</h1>
-            <h2 className="text-xs	text-[white] mt-1">kurniadiahmadwijaya@gmail.com</h2>
+            <h1 className="text-xl	 font-semibold text-[white]">
+              Muhammad Memeng
+            </h1>
+            <h2 className="text-xs	text-[white] mt-1">
+              kurniadiahmadwijaya@gmail.com
+            </h2>
 
             <div className="flex gap-10 mt-3">
               <h2 className="text-xs	text-[white]">Bandung</h2>
               <h2 className="text-xs	text-[white]">Telkom University</h2>
             </div>
             <div className="mt-5">
-              <Button colorScheme='main' size='xs'>Edit Profile</Button>
+              <Button colorScheme="main" size="xs">
+                Edit Profile
+              </Button>
             </div>
           </div>
           <div>
-            <Box boxSize='115px'>
-              <Image src='https://bit.ly/dan-abramov' alt='Dan Abramov' borderRadius="8px" />
+            <Box boxSize="115px">
+              <Image
+                src="https://bit.ly/dan-abramov"
+                alt="Dan Abramov"
+                borderRadius="8px"
+              />
             </Box>
           </div>
         </div>
@@ -40,11 +50,13 @@ const Profile = () => {
         <div className="h-[140px] w-[420px] rounded-lg	bg-[green]">
           <div className="p-4">
             <h1 className="text-[white]">Leader</h1>
-            <h1 className="font-black	text-3xl	text-[white]">Gemastik XII - UX Design</h1>
+            <h1 className="font-black	text-3xl	text-[white]">
+              Gemastik XII - UX Design
+            </h1>
 
             <div className="mt-5 flex justify-end">
               <div className="mr-4 h-[30px] w-[30px] bg-[orange] rounded-full"></div>
-              <h1 className="text-base	font-medium	text-[white]">1st Winner</h1> 
+              <h1 className="text-base	font-medium	text-[white]">1st Winner</h1>
             </div>
           </div>
         </div>
@@ -54,16 +66,17 @@ const Profile = () => {
         <div className="h-[140px] w-[420px] rounded-lg	bg-[purple]">
           <div className="p-4">
             <h1 className="text-[white]">Business Analyst</h1>
-            <h1 className="font-black	text-3xl	text-[white]">Code 2020 - IT Business</h1>
+            <h1 className="font-black	text-3xl	text-[white]">
+              Code 2020 - IT Business
+            </h1>
 
             <div className="mt-5 flex justify-end">
               <div className="mr-4 h-[30px] w-[30px] bg-[grey] rounded-full"></div>
-              <h1 className="text-base	font-medium	text-[white]">2nd Winner</h1> 
+              <h1 className="text-base	font-medium	text-[white]">2nd Winner</h1>
             </div>
           </div>
         </div>
       </div>
-
     </DefaultLayout>
   );
 };
