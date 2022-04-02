@@ -6,62 +6,135 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Lab {
-  id  String  @id @default(cuid())
-  admin_id String?
-  lab_admin Users? @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  lab_name  String
-  color_code  String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt  @default(now())
+  id         String      @id @default(cuid())
+  admin_id   String?
+  lab_admin  Users?      @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  lab_name   String
+  color_code String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now()) @updatedAt
+  LabMember  LabMember[]
 }
 
 model LabMember {
-  id  String  @id @default(cuid())
-  lab_id  String?
-  lab Lab? @relation(fields: [lab_id], references: [id], onDelete: Cascade)
-  user_id String?
-  user  Users? @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt  @default(now())
+  id         String   @id @default(cuid())
+  lab_id     String?
+  lab        Lab?     @relation(fields: [lab_id], references: [id], onDelete: Cascade)
+  user_id    String?
+  user       Users?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model Team {
-  id  String  @id @default(cuid())
-  competition_id  String?
-  competition Competition?  @relation(fields: [competition_id], references: [id], onDelete: Cascade)
-  leader_id String?
-  leader  Users? @relation(fields: [leader_id], references: [id], onDelete: Cascade)
-  team_name String
-  max_member  Int
-  roles_offered String
-  color_code  String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt  @default(now())
+  id             String       @id @default(cuid())
+  competition_id String?
+  competition    Competition? @relation(fields: [competition_id], references: [id], onDelete: Cascade)
+  leader_id      String?
+  leader         Users?       @relation(fields: [leader_id], references: [id], onDelete: Cascade)
+  team_name      String
+  max_member     Int
+  roles_offered  String
+  color_code     String
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @default(now()) @updatedAt
+  TeamMember     TeamMember[]
 }
 
 model TeamMember {
-  id  String  @id @default(cuid())
-  team_id String?
-  team  Team? @relation(fields: [team_id], references: [id], onDelete: Cascade)
-  user_id String?
-  user  Users?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  status  Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt  @default(now())
+  id         String   @id @default(cuid())
+  team_id    String?
+  team       Team?    @relation(fields: [team_id], references: [id], onDelete: Cascade)
+  user_id    String?
+  user       Users?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  status     Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model Competition {
-  id  String  @id @default(cuid())
-  name  String
-  organizer String
-  description String? @db.Text
+  id          String   @id @default(cuid())
+  name        String
+  organizer   String
+  description String?  @db.Text
   guidebookk  String?
-  category  String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt  @default(now())
+  category    String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  Team        Team[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  userId             String  @map("user_id")
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+  user               Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String   @map("user_id")
+  expires      DateTime
+  users        Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Users {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?    @map("email_verified")
+  password      String?
+  major         String?
+  academic_year String?
+  skills        String?
+  image         String?      @map("profile_picture")
+  accounts      Account[]
+  sessions      Session[]
+  labs          Lab[]
+  labMembers    LabMember[]
+  teams         Team[]
+  teamMembers   TeamMember[]
+  history       History[]
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @default(now()) @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("Verification_Token")
+}
+
+model History {
+  id         String    @id @default(cuid())
+  user_id    String?
+  users      Users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  name       String?
+  status     String?
+  role       String?
+  date       DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
 }
