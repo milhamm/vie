@@ -1,5 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "../../../client/prisma";
+import bcrypt from "bcrypt";
 
 type Data = {
   name: string;
@@ -7,7 +9,7 @@ type Data = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   switch (req.method) {
     case "POST":
@@ -17,13 +19,14 @@ export default async function handler(
       try {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
-        const user  = await prisma.user.create({ data: { ...data } });
+        const user  = await prisma.users.create({ data: { ...data } });
         res.send(user);
       } catch (error) {
-        errorHandler(error, req, res);
+        res.send("Error");
       }
       break;
     default:
+      res.status(404).send("Account Registered failed");
       break;
   }
 }
