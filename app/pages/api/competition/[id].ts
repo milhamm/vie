@@ -7,21 +7,22 @@ export default async function handler(
   res: NextApiResponse
 ) {
   switch (req.method) {
-    case "GET":
-      // showTeam
-      const team = await prisma.team.findMany();
-      res.send(team);
-      break;
-    case "POST":
-      // createTeam
-      const data = req.body;
-      const createTeam = await prisma.team.create({
-        data: { ...data },
+    case "DELETE":
+      // deleteCompetition
+
+      const id = req.query.id as string;
+
+      await prisma.competition.delete({
+        where: {
+          id: id,
+        },
       });
-      res.send(createTeam);
+
+      res.status(204).end();
       break;
+
     default:
-      res.status(404).send("Not Allowed");
+      res.status(404).send("not allowed");
       break;
   }
 }

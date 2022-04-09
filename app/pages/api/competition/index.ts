@@ -16,7 +16,7 @@ export default async function handler(
       // addCompetition
       const data = req.body;
       const addCompetition = await prisma.competition.create({
-        ...data,
+        data: { ...data },
       });
       res.send(addCompetition);
       break;
