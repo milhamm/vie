@@ -3,11 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../client/prisma";
 import bcrypt from "bcrypt";
 
-type Data = {
-  name: string;
-};
-
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -36,20 +31,13 @@ export default async function handler(
             res.send(user);
           } else {
             res.status(401).send("Email or password is wrong");
-              
           }
         } else {
           res.status(404).send("user doesnt exist");
-          }
-        } catch (error) {
-          res.send("Erorr")
         }
-        break;
+      } catch (error) {
+        res.send("Erorr");
+      }
+      break;
   }
 }
-
-
-      
-      
-    
- 

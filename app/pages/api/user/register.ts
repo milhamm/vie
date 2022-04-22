@@ -3,10 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../client/prisma";
 import bcrypt from "bcrypt";
 
-type Data = {
-  name: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -15,15 +11,15 @@ export default async function handler(
     case "POST":
       const data = req.body;
 
-      
       try {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
-        const user  = await prisma.users.create({ data: { ...data } });
+        const user = await prisma.users.create({ data: { ...data } });
         res.send(user);
       } catch (error) {
         res.send("Error");
       }
+
       break;
     default:
       res.status(404).send("Account Registered failed");

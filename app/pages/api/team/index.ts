@@ -9,7 +9,11 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       // showTeam
-      const team = await prisma.team.findMany();
+      const team = await prisma.team.findMany({
+        include: {
+          competition: true,
+        },
+      });
       res.send(team);
       break;
     case "POST":
