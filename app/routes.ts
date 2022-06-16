@@ -4,21 +4,21 @@ const BOTTOM_NAV_ROUTES = [
     name: "Home",
     icon: "dashboard",
   },
-  {
-    href: "/forum",
-    name: "Forum",
-    icon: "forum",
-  },
+  // {
+  //   href: "/forum",
+  //   name: "Forum",
+  //   icon: "forum",
+  // },
   {
     href: "/team",
     name: "Team",
     icon: "team",
   },
-  {
-    href: "/chat",
-    name: "Chat",
-    icon: "chat",
-  },
+  // {
+  //   href: "/chat",
+  //   name: "Chat",
+  //   icon: "chat",
+  // },
   {
     href: "/profile",
     name: "Profile",

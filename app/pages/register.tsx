@@ -2,6 +2,8 @@ import { Text, Input, Button, Link } from "@chakra-ui/react";
 import React from "react";
 import NextLink from "next/link";
 
+// TODO: aang
+
 const Register = () => {
   return (
     <div>

@@ -1,6 +1,18 @@
+import withAuth from "lib/withAuth";
 import React from "react";
 
-const OfferPage = () => {
+// TODO: ridho
+
+export const getServerSideProps = withAuth(async (ctx) => {
+  const token = ctx.req.cookies.token;
+  return {
+    props: {
+      token,
+    },
+  };
+});
+
+const OfferPage = ({ token }) => {
   return (
     <div>
       <h1>Offers</h1>

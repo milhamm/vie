@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Users } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
   async register(data: Prisma.UsersCreateInput) {
     return this.prisma.users.create({ data });
   }
@@ -25,5 +26,9 @@ export class UserService {
         history: true,
       },
     });
+  }
+
+  async addHistory(data: Prisma.HistoryCreateManyInput): Promise<any> {
+    return this.prisma.history.create({ data });
   }
 }

@@ -61,4 +61,14 @@ export class UserController {
       throw new HttpException(error, 500);
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('history')
+  async addHistory(
+    @Request() req,
+    @Body() data: { name: string; status: string; role: string; date: string },
+  ) {
+    const userId = req.user.id;
+    return this.userService.addHistory({ ...data, user_id: userId });
+  }
 }

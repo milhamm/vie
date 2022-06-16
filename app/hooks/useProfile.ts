@@ -1,4 +1,4 @@
-import { fetcher, headerAuth } from "client/api";
+import api, { fetcher, headerAuth } from "client/api";
 import useSWR from "swr";
 
 type ProfileResponse = {
@@ -12,6 +12,13 @@ type ProfileResponse = {
   name: string;
   skills: string;
   updated_at: string;
+  history: Array<{
+    id: string;
+    date: string;
+    name: string;
+    role: string;
+    status: string;
+  }>;
 };
 
 const useProfile = (token: string) => {
@@ -22,9 +29,18 @@ const useProfile = (token: string) => {
     fetcher
   );
 
+  const addHistory = async (payload) => {
+    try {
+      await api.post("/user/history", payload, config);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     user: data,
     error,
+    addHistory,
   };
 };
 
