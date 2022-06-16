@@ -15,16 +15,12 @@ const withAuth =
       });
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } catch (error) {
-      if (error?.response) {
-        if (error?.response?.data === "Unauthorized.") {
-          return {
-            redirect: {
-              destination: "/login",
-              permanent: false,
-            },
-          };
-        }
-      }
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
     }
 
     return await GetServerSidePropsFunction(ctx);

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import cx from "classnames";
-import { pickTextColorBasedOnBgColorAdvanced } from "utils/pickColor";
+import { pickTextColorBasedOnBgColorAdvanced } from "lib/pickColor";
 
 type TeamCardProps = {
   teamName: string;
