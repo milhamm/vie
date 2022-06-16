@@ -1,8 +1,13 @@
 import { Text, Input, Button, Link } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import NextLink from "next/link";
+import { useAuth } from "../context/authentication";
 
 const Login = () => {
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div>
       <div className="w-full bg-[#FF3DE0] h-[171px] flex items-end p-6 auth-banner">
@@ -14,16 +19,30 @@ const Login = () => {
         <div>
           <div className="mb-6">
             <Text mb="8px">Email</Text>
-            <Input focusBorderColor="main.500" size="md" type="email" />
+            <Input
+              focusBorderColor="main.500"
+              size="md"
+              type="email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="mb-6">
             <Text mb="8px">Password</Text>
-            <Input focusBorderColor="main.500" size="md" type="password" />
+            <Input
+              focusBorderColor="main.500"
+              size="md"
+              type="password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
         </div>
+        <p className="text-red-500">{""}</p>
       </div>
       <div className="mt-4 px-6">
         <Button
+          isLoading={false}
           colorScheme="main"
           isFullWidth
           fontWeight={400}
@@ -31,6 +50,12 @@ const Login = () => {
           size="lg"
           fontSize="md"
           borderRadius={8}
+          onClick={() => {
+            login({
+              email: email,
+              password: password,
+            });
+          }}
         >
           Login
         </Button>

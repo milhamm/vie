@@ -1,41 +1,54 @@
-import { Controller, Get, Post, Body, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  Request,
+  UseGuards,
+  Get,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from '../auth/auth.service';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
+  /**
+   * Function for authenticate users
+   * @param req : contains email and password
+   * @returns user data
+   */
+
+  @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Body() data: { email: string; password: string }) {
-    const { email, password } = data;
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
 
-    const user = await this.userService.login({
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  async getProfile(@Request() req) {
+    const { password, ...response } = await this.userService.login({
       where: {
-        email: email,
-      },
-      select: {
-        id: true,
-        image: true,
-        name: true,
-        email: true,
-        password: true,
+        id: req.user.id,
       },
     });
 
-    if (user?.password) {
-      const ValidPass = await bcrypt.compare(password, user.password);
-      console.log(ValidPass);
-      if (ValidPass) {
-        return user;
-      } else {
-        throw new HttpException('Email or Password is wrong', 401);
-      }
-    } else {
-      throw new HttpException('User Dosent Exist', 404);
-    }
+    return response;
   }
+
+  /**
+   * A function for registering new user
+   * @param data : containg user data, name, email, password, academic year
+   * @returns user data
+   */
 
   @Post('register')
   async register(@Body() data: Prisma.UsersCreateInput) {

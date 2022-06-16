@@ -8,7 +8,7 @@ type DefaultLayoutProps = {
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <div>
-      <main>{children}</main>
+      <main className="pb-[96px]">{children}</main>
       <BottomNav />
     </div>
   );

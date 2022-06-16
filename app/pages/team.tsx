@@ -1,15 +1,20 @@
 import {
   Input,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
   Select,
   Text,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import DefaultLayout from "components/Layouts/DefaultLayout";
+import useSWR from "swr";
+import { fetcher } from "client/api";
+import TeamCard from "components/TeamCard";
+import { TeamType } from "types";
 
 const Team = () => {
+  const { data, error } = useSWR<Array<TeamType>>("/team", fetcher);
+
   return (
     <DefaultLayout>
       <div className="p-8">
@@ -42,34 +47,18 @@ const Team = () => {
         </div>
 
         <div className="mt-[4rem] flex flex-col gap-4">
-          <div className="flex justify-center">
-            <div className="h-[140px] w-[420px] rounded-lg	bg-[green] flex items-end">
-              <div className="p-4 w-full">
-                <div className="flex w-full justify-between">
-                  <h1 className="text-white text-2xl font-black">SSATeam</h1>
-                  <p className="text-white">Designer, Programmer</p>
-                </div>
-                <div className="flex w-full justify-between">
-                  <h6 className="text-white">2 / 3 Members</h6>
-                  <p className="text-white">Smart IT Fest - UI/UX Design</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <div className="h-[140px] w-[420px] rounded-lg	bg-[green] flex items-end">
-              <div className="p-4 w-full">
-                <div className="flex w-full justify-between">
-                  <h1 className="text-white text-2xl font-black">SSATeam</h1>
-                  <p className="text-white">Designer, Programmer</p>
-                </div>
-                <div className="flex w-full justify-between">
-                  <h6 className="text-white">2 / 3 Members</h6>
-                  <p className="text-white">Smart IT Fest - UI/UX Design</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {data &&
+            data.map((team) => (
+              <TeamCard
+                key={team.id}
+                currentMember={1}
+                event={team.competition.name}
+                maxMember={team.max_member}
+                teamName={team.team_name}
+                roles={team.roles_offered}
+                color_code={team.color_code}
+              />
+            ))}
         </div>
       </div>
     </DefaultLayout>

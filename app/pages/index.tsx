@@ -31,29 +31,7 @@ const Home = () => {
             </Text>
           </div>
         </div>
-        <div className="mt-4 flex flex-col gap-4">
-          <TeamCard
-            teamName="SSATeam"
-            currentMember={2}
-            maxMember={3}
-            roles="Designer/Programmer"
-            event="Gemastik XIII - UX Design"
-          />
-          <TeamCard
-            teamName="TriplePlay"
-            currentMember={1}
-            maxMember={3}
-            roles="Business Analyst"
-            event="Compfest 12 - Bussiness IT"
-          />
-          <TeamCard
-            teamName="Shummi"
-            currentMember={1}
-            maxMember={3}
-            roles="Game Designer"
-            event="Facebook Hackathon"
-          />
-        </div>
+        <div className="mt-4 flex flex-col gap-4"></div>
       </div>
     </DefaultLayout>
   );
