@@ -15,7 +15,7 @@ const Login = () => {
           Login
         </Text>
       </div>
-      <div className="px-6 mt-[2.5rem] h-[430px] flex flex-col items-between">
+      <div className="px-6 mt-[2.5rem] h-[230px] flex flex-col items-between">
         <div>
           <div className="mb-6">
             <Text mb="8px">Email</Text>
