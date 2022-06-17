@@ -9,6 +9,15 @@ export type CompetitionType = {
   updated_at: string;
 };
 
+export type UserType = {
+  academic_year: string;
+  email: string;
+  id: string;
+  image: null | string;
+  major: string;
+  name: string;
+};
+
 export type TeamType = {
   color_code: string;
   competition: CompetitionType;
@@ -20,4 +29,6 @@ export type TeamType = {
   team_name: string;
   created_at: string;
   updated_at: string;
+  leader: UserType | null;
+  member: Array<UserType>;
 };
