@@ -9,12 +9,16 @@ import {
   Button,
   TabPanels,
   TabPanel,
+  Spacer,
+  Flex,
+  Icon,
 } from "@chakra-ui/react";
 
 import React from "react";
 import withAuth from "lib/withAuth";
 import { Image } from "@chakra-ui/react";
 import CommonTab from "components/CommonTab";
+import { CloseIcon } from "@chakra-ui/icons";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
@@ -56,7 +60,9 @@ const EditProfile = ({ token }) => {
                   </div>
                   <div className="pb-4">
                     <FormLabel htmlFor="password">Password</FormLabel>
-                    <Input id="password" placeholder="********" />
+                    <Flex minWidth="max-content" alignItems="center" gap="2">
+                      <Input id="password" placeholder="********" />
+                    </Flex>
                   </div>
                   <div>
                     <FormLabel htmlFor="university">University</FormLabel>
@@ -79,10 +85,34 @@ const EditProfile = ({ token }) => {
               <div className="pt-4">
                 <h1 className="font-bold">Your Skill</h1>
                 <div className="grid grid-cols-1 divide-y">
-                  <h1 className="pt-4 pb-4">UI/UX Designer</h1>
-                  <h1 className="pt-4 pb-4">Frontend Developer</h1>
-                  <h1 className="pt-4 pb-4">Backend Developer</h1>
-                  <h1 className="pt-4 pb-4">Data Science</h1>
+                  <Flex minWidth="max-content" alignItems="center" gap="2">
+                    <h1 className="pt-4 pb-4">UI/UX Designer</h1>
+                    <Spacer />
+                    <Box p="4">
+                      <CloseIcon w={3} h={3} color="grey.500" />
+                    </Box>
+                  </Flex>
+                  <Flex minWidth="max-content" alignItems="center" gap="2">
+                    <h1 className="pt-4 pb-4">Frontend Developer</h1>
+                    <Spacer />
+                    <Box p="4">
+                      <CloseIcon w={3} h={3} color="grey.500" />
+                    </Box>
+                  </Flex>
+                  <Flex minWidth="max-content" alignItems="center" gap="2">
+                    <h1 className="pt-4 pb-4">Backend Developer</h1>
+                    <Spacer />
+                    <Box p="4">
+                      <CloseIcon w={3} h={3} color="grey.500" />
+                    </Box>
+                  </Flex>
+                  <Flex minWidth="max-content" alignItems="center" gap="2">
+                    <h1 className="pt-4 pb-4">Data Science</h1>
+                    <Spacer />
+                    <Box p="4">
+                      <CloseIcon w={3} h={3} color="grey.500" />
+                    </Box>
+                  </Flex>
                 </div>
                 <div className="pt-4">
                   <h1 className="font-bold">Add Skill</h1>
