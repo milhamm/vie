@@ -1,4 +1,14 @@
-import { Avatar, Badge, Box, Button, Flex, Input, Select, Text, Textarea } from "@chakra-ui/react";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Input,
+  Select,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import withAuth from "lib/withAuth";
 import React from "react";
@@ -31,50 +41,46 @@ const OfferPage = ({ token }) => {
           </Text>
         </div>
       </div>
-      <div className="px-6 mt-[2.5rem] flex flex-col items-between">
+      <div className="px-6 mt-[0.25rem] flex flex-col items-between">
         <div>
           <div className="mb-6">
             <Text mb="8px" fontWeight="500">
-             Meminta Bergabung ke SSA Team
+              Meminta Bergabung ke SSA Team
             </Text>
           </div>
-          <div>
-            <Flex>
-              <Avatar src='https://bit.ly/sage-adebayo' />
-              <Box ml='3'>
-                <Text fontWeight='bold'>
-                  Jeki Mahadika
-                </Text>
-                <Text fontSize='sm'>UI/UX Designer</Text>
-              </Box>
-            </Flex>
-          </div>
-          <div>
-            <Flex>
-              <Avatar src='https://bit.ly/sage-adebayo' />
-              <Box ml='3'>
-                <Text fontWeight='bold'>
-                  Rido Eng Raka
-                </Text>
-                <Text fontSize='sm'>Data Engineer</Text>
-              </Box>
-            </Flex>
-          </div>
-          <div className="mb-6">
-            <Text mb="8px" fontWeight="500">
-             Meminta Bergabung ke WhatIsUI
-            </Text>
-          </div>
-          <div>
-            <Flex>
-              <Avatar src='https://bit.ly/sage-adebayo' />
-              <Box ml='3'>
-                <Text fontWeight='bold'>
-                  Muhammad Brimstone
-                </Text>
-                <Text fontSize='sm'>IoT Engineer</Text>
-              </Box>
-            </Flex>
+          <div className="mt-[1rem] flex flex-col gap-1">
+            <div className="mt-[0.25rem] mb-[1.5rem]">
+              <Flex>
+                <Avatar src="https://bit.ly/sage-adebayo" />
+                <Box ml="3">
+                  <Text fontWeight="bold">Jeki Mahadika</Text>
+                  <Text fontSize="sm">UI/UX Designer</Text>
+                </Box>
+              </Flex>
+            </div>
+            <div className="mt-[0.25rem] mb-[1.5rem]">
+              <Flex>
+                <Avatar src="https://bit.ly/sage-adebayo" />
+                <Box ml="3">
+                  <Text fontWeight="bold">Rido Eng Raka</Text>
+                  <Text fontSize="sm">Data Engineer</Text>
+                </Box>
+              </Flex>
+            </div>
+            <div className="mb-1">
+              <Text mb="8px" fontWeight="500">
+                Meminta Bergabung ke WhatIsUI
+              </Text>
+            </div>
+            <div className="mt-[1rem] mb-[1.5rem]">
+              <Flex>
+                <Avatar src="https://bit.ly/sage-adebayo" />
+                <Box ml="3">
+                  <Text fontWeight="bold">Muhammad Brimstone</Text>
+                  <Text fontSize="sm">IoT Engineer</Text>
+                </Box>
+              </Flex>
+            </div>
           </div>
         </div>
       </div>
