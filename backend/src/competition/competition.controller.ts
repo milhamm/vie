@@ -6,10 +6,21 @@ import { CompetitionService } from './competition.service';
 export class CompetitionController {
   constructor(private readonly competitionService: CompetitionService) {}
 
+  /**
+   * A function for creating new competition with competition data
+   * @param data: competition name, start date, etc
+   * @returns new competition created
+   */
+
   @Post()
   addCompetition(@Body() data: Prisma.CompetitionCreateInput) {
     return this.competitionService.addCompetition(data);
   }
+
+  /**
+   * A function to show a competition
+   * @returns competition
+   */
 
   @Get()
   showCompetition() {
