@@ -30,4 +30,7 @@ export class TeamController {
       },
     });
   }
+
+  @Get(':id')
+  detailTeam() {}
 }

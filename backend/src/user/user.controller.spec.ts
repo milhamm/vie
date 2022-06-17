@@ -1,5 +1,7 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException, UnauthorizedException } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { jwtConstant } from '../auth/constants';
 import { AuthService } from '../auth/auth.service';
 import { PrismaService } from '../prisma.service';
 import { UserController } from './user.controller';
@@ -16,15 +18,23 @@ const loggedInUser = {
 describe('UserController', () => {
   let controller: UserController;
   let prisma: PrismaService;
+  let auth: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          secret: jwtConstant.secret,
+          signOptions: { expiresIn: '7d' },
+        }),
+      ],
       controllers: [UserController],
       providers: [UserService, PrismaService, AuthService],
     }).compile();
 
     controller = module.get<UserController>(UserController);
     prisma = module.get<PrismaService>(PrismaService);
+    auth = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
@@ -32,14 +42,17 @@ describe('UserController', () => {
   });
 
   describe('Login Flow', () => {
-    it('should returns user data', async () => {
+    it('should returns access token', async () => {
       prisma.users.findFirst = jest.fn().mockReturnValueOnce(loggedInUser);
-      expect(
-        await controller.login({
+
+      const response = await controller.login({
+        user: {
           email: 'm.ilham.mubarak@gmail.com',
           password: 'rpl123',
-        }),
-      ).toBe(loggedInUser);
+        },
+      });
+
+      expect(response.access_token).toBeDefined();
     });
 
     it('should returns error when email/password is wrong', async () => {
@@ -49,27 +62,15 @@ describe('UserController', () => {
 
       try {
         await controller.login({
-          email: 'm.ilham.mubarak@gmail.com',
-          password: 'rpl1234',
+          user: {
+            email: 'm.ilham.mubarak@gmail.com',
+            password: 'rpl1234',
+          },
         });
       } catch (error) {
-        expect(error).toHaveProperty('response', 'Email or Password is wrong');
-        expect(error).toHaveProperty('status', 401);
-        expect(error).toBeInstanceOf(HttpException);
-      }
-    });
-
-    it('should returns error when user is not found', async () => {
-      prisma.users.findFirst = jest.fn().mockReturnValueOnce(null);
-      try {
-        await controller.login({
-          email: 'm.ilham.mubarak@gmail.com',
-          password: 'rpl1234',
-        });
-      } catch (error) {
-        expect(error).toHaveProperty('response', 'User Dosent Exist');
-        expect(error).toHaveProperty('status', 404);
-        expect(error).toBeInstanceOf(HttpException);
+        expect(error).toHaveProperty('message', 'Unauthorized');
+        expect(error).toHaveProperty('statusCode', 401);
+        expect(error).toBeInstanceOf(UnauthorizedException);
       }
     });
   });

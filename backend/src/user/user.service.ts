@@ -15,7 +15,8 @@ export class UserService {
     select?: Prisma.UsersSelect;
   }): Promise<any> {
     const { where, select } = params;
-    return this.prisma.users.findFirst({ where, select });
+    const response = await this.prisma.users.findFirst({ where, select });
+    return response;
   }
 
   async profile(params: { where?: Prisma.UsersWhereInput }): Promise<any> {
@@ -23,7 +24,7 @@ export class UserService {
     return this.prisma.users.findFirst({
       where,
       include: {
-        history: true,
+        history: false,
       },
     });
   }
