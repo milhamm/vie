@@ -22,7 +22,7 @@ const TeamCard = ({ data }: TeamCardProps) => {
 
   return (
     <LinkBox as="div">
-      <div className="flex justify-center">
+      <div className="flex justify-center shadow">
         <div
           ref={ref}
           className={cx(

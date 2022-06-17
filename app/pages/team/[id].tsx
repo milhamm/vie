@@ -9,7 +9,9 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import CommonTab from "components/CommonTab";
+import Fallback from "components/Fallback";
 import useTeam from "hooks/useTeam";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { TeamType } from "types";
 
@@ -25,19 +27,22 @@ export const getServerSideProps = async (ctx) => {
 const DetailCompetition = ({ token }) => {
   const router = useRouter();
   const { id } = router.query;
-
   const { team, error } = useTeam<TeamType>(id as string);
 
-  return team ? (
+  return error ? (
+    <Fallback code={error.statusCode} message={error.message} link="/team" />
+  ) : team ? (
     <>
       <div className="flex p-6 gap-6 items-center">
-        <div>
-          <ChevronLeftIcon
-            fontSize={40}
-            fontWeight="900"
-            color="main.500"
-          ></ChevronLeftIcon>
-        </div>
+        <Link href="/team">
+          <a>
+            <ChevronLeftIcon
+              fontSize={40}
+              fontWeight="900"
+              color="main.500"
+            ></ChevronLeftIcon>
+          </a>
+        </Link>
         <div>
           <Text fontSize={24} fontWeight="900" color="main.500">
             {team.team_name}
@@ -47,7 +52,7 @@ const DetailCompetition = ({ token }) => {
       <div className="flex px-8">
         <Box boxSize="60px">
           <Avatar
-            src={team.leader.image}
+            src={team?.leader?.image}
             getInitials={() => team.leader.name.substring(0, 1)}
             size="lg"
           />
@@ -55,7 +60,7 @@ const DetailCompetition = ({ token }) => {
 
         <div className="flex items-center px-4">
           <div>
-            <h1 className="font-bold">{team.leader.name}</h1>
+            <h1 className="font-bold">{team?.leader?.name ?? "-"}</h1>
             <div className="flex">{team.roles_offered}</div>
           </div>
         </div>
@@ -83,7 +88,9 @@ const DetailCompetition = ({ token }) => {
       </div>
     </>
   ) : (
-    <Spinner />
+    <div className="h-screen w-full flex flex-col items-center justify-center">
+      <Spinner />
+    </div>
   );
 };
 
