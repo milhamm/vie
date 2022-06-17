@@ -28,4 +28,34 @@ export class TeamService {
       include,
     });
   }
+
+  async detailTeam(id: string) {
+    const response = await this.prisma.team.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        competition: true,
+        leader: {
+          select: {
+            name: true,
+            academic_year: true,
+            email: true,
+            image: true,
+            id: true,
+            major: true,
+          },
+        },
+        TeamMember: true,
+      },
+    });
+
+    if (!response) {
+      return null;
+    }
+
+    const { TeamMember, ...rest } = response;
+
+    return { ...rest, member: TeamMember };
+  }
 }

@@ -7,13 +7,12 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import DefaultLayout from "components/Layouts/DefaultLayout";
-import useSWR from "swr";
-import { fetcher } from "client/api";
 import TeamCard from "components/TeamCard";
 import { TeamType } from "types";
+import useTeam from "hooks/useTeam";
 
 const Team = () => {
-  const { data, error } = useSWR<Array<TeamType>>("/team", fetcher);
+  const { team, error } = useTeam<Array<TeamType>>();
 
   return (
     <DefaultLayout>
@@ -47,18 +46,7 @@ const Team = () => {
         </div>
 
         <div className="mt-[4rem] flex flex-col gap-4">
-          {data &&
-            data.map((team) => (
-              <TeamCard
-                key={team.id}
-                currentMember={1}
-                event={team.competition.name}
-                maxMember={team.max_member}
-                teamName={team.team_name}
-                roles={team.roles_offered}
-                color_code={team.color_code}
-              />
-            ))}
+          {team && team?.map((team) => <TeamCard key={team.id} data={team} />)}
         </div>
       </div>
     </DefaultLayout>

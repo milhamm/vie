@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { TeamService } from './team.service';
 
@@ -11,7 +18,6 @@ export class TeamController {
    * @param data: team name, etc
    * @returns new team created
    */
-
   @Post()
   createTeam(@Body() data: Prisma.TeamCreateInput) {
     return this.teamService.createTeam(data);
@@ -21,7 +27,6 @@ export class TeamController {
    * A function to show a team
    * @returns team
    */
-
   @Get()
   showTeam() {
     return this.teamService.showTeam({
@@ -31,6 +36,19 @@ export class TeamController {
     });
   }
 
+  /**
+   *
+   * @param id an ID to search
+   * @returns team detail
+   */
   @Get(':id')
-  detailTeam() {}
+  async detailTeam(@Param('id') id: string) {
+    const response = await this.teamService.detailTeam(id);
+
+    if (!response) {
+      throw new NotFoundException();
+    }
+
+    return response;
+  }
 }
