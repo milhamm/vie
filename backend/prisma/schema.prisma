@@ -55,6 +55,8 @@ model TeamMember {
   status     Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+
+  @@unique([user_id, team_id])
 }
 
 model Competition {

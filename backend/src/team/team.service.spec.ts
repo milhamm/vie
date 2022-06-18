@@ -94,12 +94,15 @@ describe('TeamService', () => {
   it('should create teams', async () => {
     prisma.team.create = jest.fn().mockReturnValueOnce(gemastik);
     expect(
-      await service.createTeam({
-        color_code: '#fde900',
-        max_member: 3,
-        roles_offered: 'Beban',
-        team_name: 'SSATeam',
-      }),
+      await service.createTeam(
+        {
+          color_code: '#fde900',
+          max_member: 3,
+          roles_offered: 'Beban',
+          team_name: 'SSATeam',
+        },
+        'some_user_id',
+      ),
     ).toBe(gemastik);
   });
 });

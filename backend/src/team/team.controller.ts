@@ -5,8 +5,13 @@ import {
   Body,
   Param,
   NotFoundException,
+  UseGuards,
+  Req,
+  HttpException,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
+import { OptionalJWT } from '../auth/guards/optional.guard';
 import { TeamService } from './team.service';
 
 @Controller('team')
@@ -18,9 +23,10 @@ export class TeamController {
    * @param data: team name, etc
    * @returns new team created
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  createTeam(@Body() data: Prisma.TeamCreateInput) {
-    return this.teamService.createTeam(data);
+  createTeam(@Body() data: Prisma.TeamCreateInput, @Req() req) {
+    return this.teamService.createTeam(data, req.user.id);
   }
 
   /**
@@ -30,6 +36,9 @@ export class TeamController {
   @Get()
   showTeam() {
     return this.teamService.showTeam({
+      orderBy: {
+        created_at: 'desc',
+      },
       include: {
         competition: true,
       },
@@ -41,12 +50,25 @@ export class TeamController {
    * @param id an ID to search
    * @returns team detail
    */
+  @UseGuards(OptionalJWT)
   @Get(':id')
-  async detailTeam(@Param('id') id: string) {
-    const response = await this.teamService.detailTeam(id);
+  async detailTeam(@Param('id') id: string, @Req() req) {
+    const response = await this.teamService.detailTeam(id, req);
 
     if (!response) {
       throw new NotFoundException();
+    }
+
+    return response;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id/join')
+  async joinTeam(@Param('id') id: string, @Req() req) {
+    const response = await this.teamService.joinTeam(id, req.user.id);
+
+    if (!response.success) {
+      throw new HttpException(response.message, response.code);
     }
 
     return response;

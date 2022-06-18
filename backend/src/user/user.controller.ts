@@ -10,6 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { JWTGuard } from '../auth/guards/jwt.guard';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from './user.service';
 
@@ -62,7 +63,7 @@ export class UserController {
     }
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JWTGuard)
   @Post('history')
   async addHistory(
     @Request() req,
