@@ -71,6 +71,10 @@ export class TeamService {
       },
     });
 
+    if (!response) {
+      return null;
+    }
+
     let statusJoined = 0;
 
     if (req && req.user) {
@@ -78,10 +82,6 @@ export class TeamService {
         (val) => val.user.id === req.user.id,
       );
       statusJoined = findMember ? findMember.status : 0;
-    }
-
-    if (!response) {
-      return null;
     }
 
     const { TeamMember, ...rest } = response;

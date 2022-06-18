@@ -40,7 +40,7 @@ export class TeamController {
   }
 
   /**
-   *
+   * A function to display the team detail
    * @param id an ID to search
    * @returns team detail
    */
@@ -56,6 +56,12 @@ export class TeamController {
     return response;
   }
 
+  /**
+   * A function used to join a certain team
+   * @param id Competition ID
+   * @param req Request parameter to get the user id
+   * @returns response message on success or failed
+   */
   @UseGuards(AuthGuard('jwt'))
   @Get(':id/join')
   async joinTeam(@Param('id') id: string, @Req() req) {
