@@ -11,11 +11,17 @@ export const internalAPI = axios.create({
   withCredentials: true,
 });
 
-export const headerAuth = (token: string) => ({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+export const headerAuth = (token: string) => {
+  if (token) {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  }
+
+  return {};
+};
 
 const onResponseSuccess = (response: AxiosResponse<any, any>) => {
   return response.data;

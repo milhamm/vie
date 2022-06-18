@@ -36,11 +36,13 @@ const TeamCard = ({ data }: TeamCardProps) => {
                   <h1 className="text-2xl font-black">{team_name}</h1>
                 </LinkOverlay>
               </NextLink>
-              <p className="">{roles_offered}</p>
+              <p>{roles_offered}</p>
             </div>
             <div className="flex w-full justify-between">
-              <h6 className="">0/{max_member} Members</h6>
-              <p className="">{competition.name}</p>
+              <h6 className="">
+                {data.TeamMember.length} / {max_member} Members
+              </h6>
+              <p className="font-bold">{competition.name}</p>
             </div>
           </div>
         </div>

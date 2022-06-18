@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Tab,
   TabList,
   TabPanel,
   TabPanels,

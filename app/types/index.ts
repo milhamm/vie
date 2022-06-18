@@ -18,6 +18,8 @@ export type UserType = {
   name: string;
 };
 
+export type JoinStatusType = 0 | 1 | 2;
+
 export type TeamType = {
   color_code: string;
   competition: CompetitionType;
@@ -30,5 +32,9 @@ export type TeamType = {
   created_at: string;
   updated_at: string;
   leader: UserType | null;
-  member: Array<UserType>;
+  TeamMember: Array<{
+    status: JoinStatusType;
+    user: Pick<UserType, "id" | "name" | "image">;
+  }>;
+  join_status: JoinStatusType | undefined;
 };

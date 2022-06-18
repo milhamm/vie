@@ -7,6 +7,7 @@ import {
   TabList,
   Spinner,
   Avatar,
+  AvatarGroup,
 } from "@chakra-ui/react";
 import CommonTab from "components/CommonTab";
 import Fallback from "components/Fallback";
@@ -27,11 +28,24 @@ export const getServerSideProps = async (ctx) => {
 const DetailCompetition = ({ token }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { team, error } = useTeam<TeamType>(id as string);
+  const { team, error } = useTeam<TeamType>(id as string, token);
 
-  return error ? (
-    <Fallback code={error.statusCode} message={error.message} link="/team" />
-  ) : team ? (
+  if (error) {
+    return (
+      <Fallback code={error.statusCode} message={error.message} link="/team" />
+    );
+  }
+
+  if (!team) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  const isJoined = team.join_status === 2;
+  return (
     <>
       <div className="flex p-6 gap-6 items-center">
         <Link href="/team">
@@ -78,19 +92,32 @@ const DetailCompetition = ({ token }) => {
           <h1 className="pt-1">{team.competition.organizer}</h1>
           <h1 className="pt-8 font-bold">Attachment</h1>
           <h1>{team.competition.guidebook ?? "No attached file"}</h1>
-          <h1 className="pt-8 font-bold">Joined Member - </h1>
+          <h1 className="pt-8 font-bold">Joined Member</h1>
+          <div>
+            <AvatarGroup className="pt-2" size="md">
+              {team.TeamMember.map((member) => (
+                <Avatar
+                  name={member.user.name}
+                  src={member.user.image}
+                  key={member.user.id}
+                />
+              ))}
+            </AvatarGroup>
+          </div>
         </div>
       </div>
       <div className="px-8">
-        <Button color="white" isFullWidth bg="main.500" size="md">
-          Join Team
+        <Button
+          color="white"
+          isFullWidth
+          bg="main.500"
+          size="md"
+          disabled={isJoined}
+        >
+          {isJoined ? "Joined" : "Join Team"}
         </Button>
       </div>
     </>
-  ) : (
-    <div className="h-screen w-full flex flex-col items-center justify-center">
-      <Spinner />
-    </div>
   );
 };
 
