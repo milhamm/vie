@@ -34,15 +34,9 @@ export class TeamController {
    * @returns team
    */
   @Get()
-  showTeam() {
-    return this.teamService.showTeam({
-      orderBy: {
-        created_at: 'desc',
-      },
-      include: {
-        competition: true,
-      },
-    });
+  async showTeam() {
+    const response = await this.teamService.showTeam();
+    return response;
   }
 
   /**

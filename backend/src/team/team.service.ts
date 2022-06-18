@@ -21,23 +21,22 @@ export class TeamService {
     });
   }
 
-  async showTeam(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.TeamWhereUniqueInput;
-    where?: Prisma.TeamWhereInput;
-    orderBy?: Prisma.TeamOrderByWithRelationInput;
-    include?: Prisma.TeamInclude;
-  }) {
-    const { skip, take, cursor, where, orderBy, include } = params;
-    return this.prisma.team.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      include,
+  async showTeam() {
+    const response = await this.prisma.team.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
+      include: {
+        competition: true,
+        TeamMember: {
+          where: {
+            status: 2,
+          },
+        },
+      },
     });
+
+    return response;
   }
 
   async detailTeam(id: string, req: any) {
@@ -89,7 +88,7 @@ export class TeamService {
 
     return {
       ...rest,
-      member: TeamMember.filter((val) => val.status == 2),
+      TeamMember: TeamMember.filter((val) => val.status == 2),
       join_status: statusJoined,
     };
   }
