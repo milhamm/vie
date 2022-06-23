@@ -2,12 +2,29 @@ import api, { fetcher, headerAuth } from "client/api";
 import { useState } from "react";
 import useSWR from "swr";
 
-const useTeam = <T>(token?: string, id?: string) => {
-  const config = headerAuth(token);
+type UseTeamType = {
+  token?: string;
+  id?: string;
+  query?: {
+    search?: string;
+    competition?: string;
+    organizer?: string;
+  };
+};
+
+const useTeam = <T>(
+  { token, id, query }: UseTeamType = { token: null, id: null, query: {} }
+) => {
+  let config: any = headerAuth(token);
+
+  config = { ...config, params: query };
+
   const [loading, setLoading] = useState(false);
 
+  console.log({ config });
+
   const { data, error, mutate } = useSWR<T>(
-    id ? (token ? [`/team/${id}`, config] : `/team/${id}`) : "/team",
+    id ? (token ? [`/team/${id}`, config] : `/team/${id}`) : ["/team", config],
     fetcher
   );
 

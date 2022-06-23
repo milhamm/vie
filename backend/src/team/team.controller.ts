@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
@@ -35,9 +36,14 @@ export class TeamController {
    * @returns team
    */
   @Get()
-  async showTeam() {
-    const response = await this.teamService.showTeam();
-    return response;
+  async showTeam(@Query() query) {
+    if (Object.keys(query).length) {
+      const response = await this.teamService.showFilteredTeam(query);
+      return response;
+    } else {
+      const response = await this.teamService.showTeam();
+      return response;
+    }
   }
 
   /**

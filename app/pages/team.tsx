@@ -12,6 +12,8 @@ import TeamCard from "components/TeamCard";
 import { TeamType } from "types";
 import useTeam from "hooks/useTeam";
 import Link from "next/link";
+import { useState } from "react";
+import { useDebounce } from "hooks/useDebounce";
 
 export const getServerSideProps = async (ctx) => {
   const role = ctx.req.cookies.role;
@@ -24,7 +26,23 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Team = ({ config }) => {
-  const { team, error } = useTeam<Array<TeamType>>();
+  const [search, setSearch] = useState("");
+  const [competition, setCompetition] = useState("");
+  const [organizer, setOrganizer] = useState("");
+
+  const debounceSearch = useDebounce(search, 500);
+  const debounceCompetition = useDebounce(competition, 500);
+  const debounceOrganizer = useDebounce(organizer, 500);
+
+  console.log({ debounceSearch });
+
+  const { team, error } = useTeam<Array<TeamType>>({
+    query: {
+      search: debounceSearch,
+      competition: debounceCompetition,
+      organizer: debounceOrganizer,
+    },
+  });
 
   return (
     <DefaultLayout title="Team" role={config.role}>
@@ -33,7 +51,11 @@ const Team = ({ config }) => {
           Competition Team
         </h1>
         <InputGroup>
-          <Input placeholder="Search for Competition" />
+          <Input
+            placeholder="Search for Team"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <InputRightElement>
             <SearchIcon />
           </InputRightElement>
@@ -41,20 +63,20 @@ const Team = ({ config }) => {
         <div className="mt-5 flex gap-5">
           <div className="w-full">
             <Text>Competition</Text>
-            <Select placeholder="Select option">
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </Select>
+            <Input
+              placeholder="Search for Competition"
+              value={competition}
+              onChange={(e) => setCompetition(e.target.value)}
+            />
           </div>
 
           <div className="w-full">
-            <Text>University</Text>
-            <Select placeholder="Select option">
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </Select>
+            <Text>Organizer</Text>
+            <Input
+              placeholder="Search for Organizer"
+              value={organizer}
+              onChange={(e) => setOrganizer(e.target.value)}
+            />
           </div>
         </div>
         <div className="pt-8 flex justify-end">

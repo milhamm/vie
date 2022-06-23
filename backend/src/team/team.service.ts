@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { of } from 'rxjs';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -45,6 +46,50 @@ export class TeamService {
         },
       },
     });
+
+    return response;
+  }
+
+  async showFilteredTeam(query) {
+    const { search, competition, organizer } = query;
+    let filter = {};
+
+    if (search) {
+      filter = {
+        where: {
+          team_name: {
+            contains: search,
+          },
+        },
+      };
+    }
+
+    let response = await this.prisma.team.findMany({
+      ...filter,
+      orderBy: {
+        created_at: 'desc',
+      },
+      include: {
+        competition: true,
+        TeamMember: {
+          where: {
+            status: 2,
+          },
+        },
+      },
+    });
+
+    if (competition) {
+      response = response.filter((val) =>
+        val.competition.name.toLowerCase().includes(competition),
+      );
+    }
+
+    if (organizer) {
+      response = response.filter((val) =>
+        val.competition.organizer.toLowerCase().includes(organizer),
+      );
+    }
 
     return response;
   }

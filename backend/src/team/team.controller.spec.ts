@@ -29,7 +29,7 @@ describe('TeamController', () => {
 
   it('should show all teams', async () => {
     prisma.team.findMany = jest.fn().mockReturnValueOnce(ALL_TEAMS);
-    expect(await controller.showTeam()).toBe(ALL_TEAMS);
+    expect(await controller.showTeam({})).toBe(ALL_TEAMS);
   });
 
   it('should show detail team successfully', async () => {
