@@ -13,11 +13,21 @@ import { TeamType } from "types";
 import useTeam from "hooks/useTeam";
 import Link from "next/link";
 
-const Team = () => {
+export const getServerSideProps = async (ctx) => {
+  const role = ctx.req.cookies.role;
+
+  return {
+    props: {
+      config: { role },
+    },
+  };
+};
+
+const Team = ({ config }) => {
   const { team, error } = useTeam<Array<TeamType>>();
 
   return (
-    <DefaultLayout title="Team">
+    <DefaultLayout title="Team" role={config.role}>
       <div className="p-8">
         <h1 className="text-3xl font-black text-[#FF3DE0] mb-6">
           Competition Team

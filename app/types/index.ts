@@ -52,3 +52,20 @@ export type OfferType = {
     user: Pick<UserType, "name" | "skills" | "image">;
   }>;
 };
+
+export type LabsType = {
+  id: string;
+  admin_id: string;
+  lab_name: string;
+  color_code: string;
+  created_at: string;
+  updated_at: string;
+  LabMember: Array<{
+    id: string;
+    lab_id: string;
+    user_id: string;
+    created_at: string;
+    updated_at: string;
+    user: Pick<UserType, "name" | "skills" | "image">;
+  }>;
+};

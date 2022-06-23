@@ -1,49 +1,49 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Avatar, Box, Button } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import DefaultLayout from "components/Layouts/DefaultLayout";
+import useLabs from "hooks/useLabs";
+import withAuth from "lib/withAuth";
+import Link from "next/link";
 
-const Lab = () => {
+export const getServerSideProps = withAuth(async (ctx) => {
+  const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
+  return {
+    props: {
+      config: { token, role },
+    },
+  };
+});
+
+const Lab = ({ config }) => {
+  const { labs } = useLabs(config.token);
+
   return (
-    <DefaultLayout title="Lab">
+    <DefaultLayout title="Lab" role={config.role}>
       <div className="p-8">
-        <h1 className="text-3xl font-black text-[#FF3DE0]">
-          RPLGBT Laboratory
-        </h1>
+        <h1 className="text-3xl font-black text-[#FF3DE0]">{labs?.lab_name}</h1>
         <div className="pt-8 flex justify-between">
           <h1>Member</h1>
           <div>
-            <Button size="sm" color="white" bg="main.500">
-              + Add
-            </Button>
+            <Link href="/lab/add">
+              <a>
+                <Button size="sm" color="white" bg="main.500">
+                  + Add
+                </Button>
+              </a>
+            </Link>
           </div>
         </div>
-        <div className="pt-8 flex items-center">
-          <Box boxSize="60px">
-            <Image
-              src="https://bit.ly/dan-abramov"
-              borderRadius="100px"
-            ></Image>
-          </Box>
-          <h1 className="px-8">Muhammad Memeng</h1>
-        </div>
-        <div className="pt-8 flex items-center">
-          <Box boxSize="60px">
-            <Image
-              src="https://bit.ly/dan-abramov"
-              borderRadius="100px"
-            ></Image>
-          </Box>
-          <h1 className="px-8">Ridho Nobelion Sabililah Damar</h1>
-        </div>
-        <div className="pt-8 flex items-center">
-          <Box boxSize="60px">
-            <Image
-              src="https://bit.ly/dan-abramov"
-              borderRadius="100px"
-            ></Image>
-          </Box>
-          <h1 className="px-8">Jeki Mahadika Gunarto</h1>
-        </div>
+        {labs &&
+          labs.LabMember.map((member) => (
+            <div className="pt-8 flex items-center" key={member.id}>
+              <Box boxSize="60px">
+                <Avatar src={member.user.image} name={member.user.name} />
+              </Box>
+              <h1 className="px-8">{member.user.name}</h1>
+            </div>
+          ))}
       </div>
     </DefaultLayout>
   );

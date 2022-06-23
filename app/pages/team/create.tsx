@@ -17,15 +17,17 @@ import { useRouter } from "next/router";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
   return {
     props: {
-      token,
+      config: { token, role },
     },
   };
 });
 
-const CreateTeamPage = ({ token }) => {
-  const { createTeam, loading } = useTeam(token);
+const CreateTeamPage = ({ config }) => {
+  const { createTeam, loading } = useTeam(config.token);
   const toast = useToast();
   const router = useRouter();
 

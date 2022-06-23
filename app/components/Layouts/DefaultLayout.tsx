@@ -5,14 +5,15 @@ import TitleLayout from "./TitleLayout";
 type DefaultLayoutProps = {
   children: React.ReactNode;
   title: string;
+  role: "ADMIN" | "USER";
 };
 
-const DefaultLayout = ({ children, title }: DefaultLayoutProps) => {
+const DefaultLayout = ({ children, title, role }: DefaultLayoutProps) => {
   return (
     <div>
       <TitleLayout title={title}>
         <main className="pb-[96px]">{children}</main>
-        <BottomNav />
+        <BottomNav role={role} />
       </TitleLayout>
     </div>
   );

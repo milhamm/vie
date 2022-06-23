@@ -55,7 +55,7 @@ const BottomNav = ({
         <div className="flex justify-around w-full">
           {BOTTOM_NAV_ROUTES.map(
             (route, i) =>
-              route.show("ADMIN") && (
+              route.show(role) && (
                 <NavItem key={i} asPath={mainPathname} {...route} />
               )
           )}

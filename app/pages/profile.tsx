@@ -17,7 +17,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
 
 const Profile = ({ config }) => {
   return (
-    <DefaultLayout title="Profile">
+    <DefaultLayout title="Profile" role={config.role}>
       <ProfileContainer token={config.token} editable={true} id={null} />
     </DefaultLayout>
   );

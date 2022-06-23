@@ -2,6 +2,7 @@ import { Text, Input, Button, Link } from "@chakra-ui/react";
 import React, { useState } from "react";
 import NextLink from "next/link";
 import { useAuth } from "../context/authentication";
+import TitleLayout from "components/Layouts/TitleLayout";
 
 const Login = () => {
   const { login } = useAuth();
@@ -9,7 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div>
+    <TitleLayout title="Login">
       <div className="w-full bg-[#FF3DE0] h-[171px] flex items-end p-6 auth-banner">
         <Text fontSize={36} fontWeight="900" color="white">
           Login
@@ -60,7 +61,7 @@ const Login = () => {
           Login
         </Button>
       </div>
-    </div>
+    </TitleLayout>
   );
 };
 
