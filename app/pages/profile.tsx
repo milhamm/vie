@@ -10,7 +10,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
 
   return {
     props: {
-      config: { token, role },
+      config: { token, role: role ? role : null },
     },
   };
 });
