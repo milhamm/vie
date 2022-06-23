@@ -19,6 +19,7 @@ import withAuth from "lib/withAuth";
 import { Image } from "@chakra-ui/react";
 import CommonTab from "components/CommonTab";
 import { CloseIcon } from "@chakra-ui/icons";
+import useProfile from "hooks/useProfile";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
@@ -30,6 +31,8 @@ export const getServerSideProps = withAuth(async (ctx) => {
 });
 
 const EditProfile = ({ token }) => {
+  const { user } = useProfile(token);
+
   return (
     <>
       <div className="p-8">

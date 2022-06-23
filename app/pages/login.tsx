@@ -59,23 +59,6 @@ const Login = () => {
         >
           Login
         </Button>
-        <Text mb={4} align="center">
-          No Account?{" "}
-          <NextLink href="/register" passHref>
-            <Link color="main.500">Register here</Link>
-          </NextLink>
-        </Text>
-        <Button
-          colorScheme="cyan"
-          color="white"
-          isFullWidth
-          fontWeight={400}
-          size="lg"
-          fontSize="md"
-          borderRadius={8}
-        >
-          Login with Google
-        </Button>
       </div>
     </div>
   );

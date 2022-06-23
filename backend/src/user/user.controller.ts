@@ -6,6 +6,7 @@ import {
   Request,
   UseGuards,
   Get,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
@@ -71,5 +72,11 @@ export class UserController {
   ) {
     const userId = req.user.id;
     return this.userService.addHistory({ ...data, user_id: userId });
+  }
+
+  @UseGuards(JWTGuard)
+  @Get('/teams')
+  async getOwnTeam(@Req() req) {
+    return this.userService.getOwnTeam(req.user.id);
   }
 }

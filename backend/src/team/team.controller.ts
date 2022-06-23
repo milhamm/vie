@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
+import { JWTGuard } from '../auth/guards/jwt.guard';
 import { OptionalJWT } from '../auth/guards/optional.guard';
 import { TeamService } from './team.service';
 
@@ -36,6 +37,30 @@ export class TeamController {
   @Get()
   async showTeam() {
     const response = await this.teamService.showTeam();
+    return response;
+  }
+
+  /**
+   * A function to show all offers that the user receive
+   * @param req
+   * @returns all offers
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/offers')
+  async offers(@Req() req) {
+    const response = await this.teamService.showOffers(req.user.id);
+    return response;
+  }
+
+  @UseGuards(JWTGuard)
+  @Post('/offers/:id')
+  async handleOffer(@Body() data, @Param('id') id) {
+    const response = await this.teamService.handleOffer(data.action, id);
+
+    if (!response) {
+      throw new HttpException('Bad Request', 400);
+    }
+
     return response;
   }
 

@@ -1,4 +1,5 @@
 import {
+  Button,
   Input,
   InputGroup,
   InputRightElement,
@@ -10,12 +11,13 @@ import DefaultLayout from "components/Layouts/DefaultLayout";
 import TeamCard from "components/TeamCard";
 import { TeamType } from "types";
 import useTeam from "hooks/useTeam";
+import Link from "next/link";
 
 const Team = () => {
   const { team, error } = useTeam<Array<TeamType>>();
 
   return (
-    <DefaultLayout>
+    <DefaultLayout title="Team">
       <div className="p-8">
         <h1 className="text-3xl font-black text-[#FF3DE0] mb-6">
           Competition Team
@@ -35,6 +37,7 @@ const Team = () => {
               <option value="option3">Option 3</option>
             </Select>
           </div>
+
           <div className="w-full">
             <Text>University</Text>
             <Select placeholder="Select option">
@@ -44,8 +47,16 @@ const Team = () => {
             </Select>
           </div>
         </div>
-
-        <div className="mt-[4rem] flex flex-col gap-4">
+        <div className="pt-8 flex justify-end">
+          <Link href="/team/create">
+            <a>
+              <Button size="sm" color="white" bg="main.500">
+                + Create Team
+              </Button>
+            </a>
+          </Link>
+        </div>
+        <div className="mt-2 flex flex-col gap-4">
           {team && team?.map((team) => <TeamCard key={team.id} data={team} />)}
         </div>
       </div>

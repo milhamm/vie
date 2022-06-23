@@ -28,7 +28,10 @@ export const getServerSideProps = async (ctx) => {
 const DetailCompetition = ({ token }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { team, error } = useTeam<TeamType>(id as string, token);
+  const { team, error, requestJoin, loading } = useTeam<TeamType>(
+    token,
+    id as string
+  );
 
   if (error) {
     return (
@@ -45,6 +48,8 @@ const DetailCompetition = ({ token }) => {
   }
 
   const isJoined = team.join_status === 2;
+  const isRequesting = team.join_status === 1;
+
   return (
     <>
       <div className="flex p-6 gap-6 items-center">
@@ -106,15 +111,17 @@ const DetailCompetition = ({ token }) => {
           </div>
         </div>
       </div>
-      <div className="px-8">
+      <div className="px-8 mb-8">
         <Button
           color="white"
           isFullWidth
           bg="main.500"
           size="md"
-          disabled={isJoined}
+          disabled={isJoined || isRequesting}
+          isLoading={loading}
+          onClick={() => requestJoin()}
         >
-          {isJoined ? "Joined" : "Join Team"}
+          {isRequesting ? (isJoined ? "Joined" : "Requested") : "Join Team"}
         </Button>
       </div>
     </>

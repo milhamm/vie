@@ -1,9 +1,17 @@
-import { Button, Input, Select, Text, Textarea } from "@chakra-ui/react";
-import React from "react";
+import {
+  Button,
+  Input,
+  NumberInput,
+  NumberInputField,
+  Select,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 import { AttachmentIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import withAuth from "lib/withAuth";
-
-// TODO: jeki
+import useTeam from "hooks/useTeam";
+import Link from "next/link";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
@@ -15,15 +23,29 @@ export const getServerSideProps = withAuth(async (ctx) => {
 });
 
 const CreateTeamPage = ({ token }) => {
+  const { createTeam } = useTeam(token);
+
+  const [team_name, setTeamName] = useState("");
+  const [max_member, setMaxMember] = useState(1);
+  const [roles_offered, setRolesOffered] = useState("");
+  const [color_code, setColorCode] = useState("#fde900");
+  const [competition_name, setCompetitionName] = useState("");
+  const [organizer, setOrganizer] = useState("");
+  const [category, setCategory] = useState("");
+
   return (
     <div>
       <div className="flex p-6 gap-6 items-center">
         <div>
-          <ChevronLeftIcon
-            fontSize={40}
-            fontWeight="900"
-            color="main.500"
-          ></ChevronLeftIcon>
+          <Link href="/team">
+            <a>
+              <ChevronLeftIcon
+                fontSize={40}
+                fontWeight="900"
+                color="main.500"
+              ></ChevronLeftIcon>
+            </a>
+          </Link>
         </div>
         <div>
           <Text fontSize={24} fontWeight="900" color="main.500">
@@ -34,17 +56,31 @@ const CreateTeamPage = ({ token }) => {
       <div className="px-6 mt-[2.5rem] flex flex-col items-between">
         <div>
           <div className="mb-6">
-            <Text mb="8px" fontWeight="500">
-              Leader Name
-            </Text>
-            <Input focusBorderColor="main.500" size="md" type="text" />
-          </div>
-          <div className="mb-6">
             <Text mb="8px">Team Name</Text>
             <Input focusBorderColor="main.500" size="md" type="text" />
           </div>
           <div className="mb-6">
+            <Text mb="8px">Roles Needed</Text>
+            <Input focusBorderColor="main.500" size="md" type="text" />
+          </div>
+          <div className="mb-6">
+            <Text mb="8px">Max Member</Text>
+            <NumberInput
+              defaultValue={1}
+              min={1}
+              max={10}
+              focusBorderColor="main.500"
+              size="md"
+            >
+              <NumberInputField borderWidth="2px" />
+            </NumberInput>
+          </div>
+          <div className="mb-6">
             <Text mb="8px">Competition Name</Text>
+            <Input focusBorderColor="main.500" size="md" type="text" />
+          </div>
+          <div className="mb-6">
+            <Text mb="8px">Competition Category</Text>
             <Input focusBorderColor="main.500" size="md" type="text" />
           </div>
           <div className="mb-6">
@@ -69,7 +105,7 @@ const CreateTeamPage = ({ token }) => {
               placeholder="Describe more details about your Competition"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-1">
             <Text mb="8px">Add Attachment</Text>
             <Button
               colorScheme="white"
@@ -92,7 +128,7 @@ const CreateTeamPage = ({ token }) => {
           </div>
         </div>
       </div>
-      <div className="mt-4 px-6">
+      <div className="mt-2 px-6">
         <Button
           colorScheme="white"
           color="main.500"

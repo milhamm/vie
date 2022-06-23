@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service';
 export class TeamService {
   constructor(private prisma: PrismaService) {}
 
-  async createTeam(data: Prisma.TeamCreateManyInput, user_id: string) {
+  async createTeam(data, user_id: string) {
     return this.prisma.team.create({
       data: {
         ...data,
@@ -118,5 +118,60 @@ export class TeamService {
       }
       return null;
     }
+  }
+
+  async showOffers(user_id: string) {
+    const response = await this.prisma.team.findMany({
+      where: {
+        leader_id: user_id,
+      },
+      include: {
+        TeamMember: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                skills: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (response) {
+      const mappedResponse = response
+        .map((res) => ({
+          team_name: res.team_name,
+          offers: res.TeamMember.filter((team) => team.status === 1),
+        }))
+        .filter((res) => res.offers.length > 0);
+
+      return mappedResponse;
+    }
+
+    return null;
+  }
+
+  async handleOffer(action: string, id: string) {
+    if (!['ACCEPT', 'DECLINE'].includes(action)) {
+      return null;
+    }
+
+    const response = await this.prisma.teamMember.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: action === 'ACCEPT' ? 2 : 0,
+      },
+    });
+
+    if (response) {
+      return response;
+    }
+
+    return null;
   }
 }

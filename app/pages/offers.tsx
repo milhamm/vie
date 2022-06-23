@@ -15,8 +15,8 @@ import {
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import withAuth from "lib/withAuth";
 import React from "react";
-
-// TODO: ridho
+import useOffer from "hooks/useOffer";
+import Link from "next/link";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
@@ -28,16 +28,20 @@ export const getServerSideProps = withAuth(async (ctx) => {
 });
 
 const OfferPage = ({ token }) => {
+  const { offers, handleOffer } = useOffer(token);
+
   return (
     <div>
       <div className="flex p-6 gap-6 items-center">
-        <div>
-          <ChevronLeftIcon
-            fontSize={40}
-            fontWeight="900"
-            color="main.500"
-          ></ChevronLeftIcon>
-        </div>
+        <Link href="/">
+          <a>
+            <ChevronLeftIcon
+              fontSize={40}
+              fontWeight="900"
+              color="main.500"
+            ></ChevronLeftIcon>
+          </a>
+        </Link>
         <div>
           <Text fontSize={24} fontWeight="900" color="main.500">
             Team Offers
@@ -46,72 +50,48 @@ const OfferPage = ({ token }) => {
       </div>
       <div className="px-6 mt-[0.25rem] flex flex-col items-between">
         <div>
-          <div className="mb-6">
-            <Text mb="8px" fontWeight="500">
-              Meminta Bergabung ke SSA Team
-            </Text>
-          </div>
-          <div className="mt-[1rem] flex flex-col gap-1">
-            <div className="mb-[1.5rem]">
-              <Flex minWidth="max-content" alignItems="center" gap="2">
-                <Avatar src="https://bit.ly/sage-adebayo" />
-                <Box ml="3">
-                  <Text fontWeight="bold">Jeki Mahadika</Text>
-                  <Text fontSize="sm">UI/UX Designer</Text>
-                </Box>
-                <Spacer />
-                <ButtonGroup gap="2">
-                  <Button colorScheme="pink" size="xs" variant="solid">
-                    Setuju
-                  </Button>
-                  <Button colorScheme="teal" size="xs" variant="outline">
-                    Tolak
-                  </Button>
-                </ButtonGroup>
-              </Flex>
-            </div>
-            <div className="mt-[0.25rem] mb-[2rem]">
-              <Flex minWidth="max-content" alignItems="center" gap="2">
-                <Avatar src="https://bit.ly/sage-adebayo" />
-                <Box ml="3">
-                  <Text fontWeight="bold">Rido Eng Raka</Text>
-                  <Text fontSize="sm">Data Engineer</Text>
-                </Box>
-                <Spacer />
-                <ButtonGroup gap="2">
-                  <Button colorScheme="pink" size="xs" variant="solid">
-                    Setuju
-                  </Button>
-                  <Button colorScheme="teal" size="xs" variant="outline">
-                    Tolak
-                  </Button>
-                </ButtonGroup>
-              </Flex>
-            </div>
-            <div className="mb-0.75">
-              <Text mb="8px" fontWeight="500">
-                Meminta Bergabung ke WhatIsUI
-              </Text>
-            </div>
-            <div className="mt-[1rem] mb-[1.5rem]">
-              <Flex minWidth="max-content" alignItems="center" gap="2">
-                <Avatar src="https://bit.ly/sage-adebayo" />
-                <Box ml="3">
-                  <Text fontWeight="bold">Muhammad Brimstone</Text>
-                  <Text fontSize="sm">IoT Engineer</Text>
-                </Box>
-                <Spacer />
-                <ButtonGroup gap="2">
-                  <Button colorScheme="pink" size="xs" variant="solid">
-                    Setuju
-                  </Button>
-                  <Button colorScheme="teal" size="xs" variant="outline">
-                    Tolak
-                  </Button>
-                </ButtonGroup>
-              </Flex>
-            </div>
-          </div>
+          {offers &&
+            offers.map((offer) => (
+              <>
+                <div className="mb-6">
+                  <Text mb="8px" fontWeight="500">
+                    Request to join {offer.team_name}
+                  </Text>
+                </div>
+                {offer.offers.map((user) => (
+                  <div className="mb-[1.5rem]" key={user.id}>
+                    <Flex minWidth="max-content" alignItems="center" gap="2">
+                      <Avatar src={user.user.image} name={user.user.name} />
+                      <Box ml="3">
+                        <Text fontWeight="bold" noOfLines={1} maxW={200}>
+                          {user.user.name}
+                        </Text>
+                        <Text fontSize="sm">{user.user.skills}</Text>
+                      </Box>
+                      <Spacer />
+                      <ButtonGroup gap="2">
+                        <Button
+                          colorScheme="pink"
+                          size="xs"
+                          variant="solid"
+                          onClick={() => handleOffer(user.id, "ACCEPT")}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          colorScheme="teal"
+                          size="xs"
+                          variant="outline"
+                          onClick={() => handleOffer(user.id, "DECLINE")}
+                        >
+                          Reject
+                        </Button>
+                      </ButtonGroup>
+                    </Flex>
+                  </div>
+                ))}
+              </>
+            ))}
         </div>
       </div>
     </div>

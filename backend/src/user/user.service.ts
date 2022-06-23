@@ -32,4 +32,23 @@ export class UserService {
   async addHistory(data: Prisma.HistoryCreateManyInput): Promise<any> {
     return this.prisma.history.create({ data });
   }
+
+  async getOwnTeam(id: string) {
+    const response = await this.prisma.team.findMany({
+      where: {
+        TeamMember: {
+          some: {
+            user_id: id,
+            AND: {
+              status: {
+                not: 1,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return response;
+  }
 }

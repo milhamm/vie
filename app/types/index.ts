@@ -16,6 +16,7 @@ export type UserType = {
   image: null | string;
   major: string;
   name: string;
+  skills: string;
 };
 
 export type JoinStatusType = 0 | 1 | 2;
@@ -37,4 +38,17 @@ export type TeamType = {
     user: Pick<UserType, "id" | "name" | "image">;
   }>;
   join_status: JoinStatusType | undefined;
+};
+
+export type OfferType = {
+  team_name: string;
+  offers: Array<{
+    id: string;
+    team_id: string;
+    user_id: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    user: Pick<UserType, "name" | "skills" | "image">;
+  }>;
 };
