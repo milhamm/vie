@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   Req,
+  Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
@@ -46,6 +47,28 @@ export class UserController {
     return response;
   }
 
+  @Get('profile/:id')
+  async getProfileById(@Param('id') id) {
+    const { password, ...response } = await this.userService.profile({
+      where: {
+        id: id,
+      },
+    });
+
+    return response;
+  }
+
+  @UseGuards(JWTGuard)
+  @Get('/teams')
+  async getOwnTeam(@Req() req) {
+    return this.userService.getOwnTeam(req.user.id);
+  }
+
+  @Get('/teams/:id')
+  async getOwnTeamById(@Param('id') id) {
+    return this.userService.getOwnTeam(id);
+  }
+
   /**
    * A function for registering new user
    * @param data : containg user data, name, email, password, academic year
@@ -72,11 +95,5 @@ export class UserController {
   ) {
     const userId = req.user.id;
     return this.userService.addHistory({ ...data, user_id: userId });
-  }
-
-  @UseGuards(JWTGuard)
-  @Get('/teams')
-  async getOwnTeam(@Req() req) {
-    return this.userService.getOwnTeam(req.user.id);
   }
 }

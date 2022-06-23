@@ -22,16 +22,16 @@ type ProfileResponse = {
   }>;
 };
 
-const useProfile = (token: string) => {
-  const config = headerAuth(token);
+const useProfile = (token: string, id?: string) => {
+  const config = token ? headerAuth(token) : {};
 
   const { data: profileData, error: profileError } = useSWR<ProfileResponse>(
-    ["/user/profile", config],
+    token ? ["/user/profile", config] : `/user/profile/${id}`,
     fetcher
   );
 
   const { data: teamsData, error: teamsError } = useSWR<Array<TeamType>>(
-    ["/user/teams", config],
+    token ? ["/user/teams", config] : `/user/teams/${id}`,
     fetcher
   );
 
