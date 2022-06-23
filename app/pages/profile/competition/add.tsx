@@ -16,8 +16,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = withAuth(async (ctx) => {
-  const token = ctx.req.cookies.token;
-  const role = ctx.req.cookies.role;
+  const token = ctx.req.cookies?.token;
+  const role = ctx.req.cookies?.role;
 
   return {
     props: {
@@ -25,7 +25,6 @@ export const getServerSideProps = withAuth(async (ctx) => {
     },
   };
 });
-
 const AddHistoryPage = ({ config }) => {
   const { addHistory } = useTeam(config.token);
   const toast = useToast();

@@ -6,8 +6,8 @@ import withAuth from "lib/withAuth";
 import Link from "next/link";
 
 export const getServerSideProps = withAuth(async (ctx) => {
-  const token = ctx.req.cookies.token;
-  const role = ctx.req.cookies.role;
+  const token = ctx.req.cookies?.token;
+  const role = ctx.req.cookies?.role;
 
   return {
     props: {

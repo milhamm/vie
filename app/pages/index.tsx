@@ -8,7 +8,7 @@ export const getServerSideProps = async (ctx) => {
 
   return {
     props: {
-      config: { role },
+      config: { role: role ? role : null },
     },
   };
 };

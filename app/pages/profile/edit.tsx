@@ -22,8 +22,8 @@ import { CloseIcon } from "@chakra-ui/icons";
 import useProfile from "hooks/useProfile";
 
 export const getServerSideProps = withAuth(async (ctx) => {
-  const token = ctx.req.cookies.token;
-  const role = ctx.req.cookies.role;
+  const token = ctx.req.cookies?.token;
+  const role = ctx.req.cookies?.role;
 
   return {
     props: {

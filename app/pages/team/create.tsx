@@ -16,16 +16,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = withAuth(async (ctx) => {
-  const token = ctx.req.cookies.token;
-  const role = ctx.req.cookies.role;
+  const token = ctx.req.cookies?.token;
+  const role = ctx.req.cookies?.role;
 
   return {
     props: {
-      config: { token, role },
+      config: { token, role: role ? role : null },
     },
   };
 });
-
 const CreateTeamPage = ({ config }) => {
   const { createTeam, loading } = useTeam(config.token);
   const toast = useToast();
