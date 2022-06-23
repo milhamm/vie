@@ -23,15 +23,17 @@ import useProfile from "hooks/useProfile";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
   return {
     props: {
-      token,
+      config: { token, role },
     },
   };
 });
 
-const EditProfile = ({ token }) => {
-  const { user } = useProfile(token);
+const EditProfile = ({ config }) => {
+  const { user } = useProfile(config.token);
 
   return (
     <>

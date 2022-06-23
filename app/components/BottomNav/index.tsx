@@ -10,6 +10,7 @@ type BottomNavProps = {
   children?: React.ReactNode;
   isHidden?: boolean;
   custom?: boolean;
+  role: "ADMIN" | "USER";
 };
 
 const routeHref: Array<string> = BOTTOM_NAV_ROUTES.map((route) =>
@@ -40,6 +41,7 @@ const BottomNav = ({
   children,
   isHidden = false,
   custom = false,
+  role = "USER",
 }: BottomNavProps) => {
   const router: NextRouter = useRouter();
   const mainPathname: string = router.asPath.split("/")[1];
@@ -51,9 +53,12 @@ const BottomNav = ({
     <div className="fixed max-w-[480px] bottom-0 bg-white w-full px-2 py-3 shadow-nav z-50">
       {isHome && !custom ? (
         <div className="flex justify-around w-full">
-          {BOTTOM_NAV_ROUTES.map((route, i) => (
-            <NavItem key={i} asPath={mainPathname} {...route} />
-          ))}
+          {BOTTOM_NAV_ROUTES.map(
+            (route, i) =>
+              route.show("ADMIN") && (
+                <NavItem key={i} asPath={mainPathname} {...route} />
+              )
+          )}
         </div>
       ) : (
         children

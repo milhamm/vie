@@ -20,15 +20,17 @@ import Link from "next/link";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
   return {
     props: {
-      token,
+      config: { token, role },
     },
   };
 });
 
-const OfferPage = ({ token }) => {
-  const { offers, handleOffer } = useOffer(token);
+const OfferPage = ({ config }) => {
+  const { offers, handleOffer } = useOffer(config.token);
 
   return (
     <div>

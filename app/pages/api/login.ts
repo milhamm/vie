@@ -20,10 +20,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         sameSite: "lax",
       });
 
-      return res.status(200).json({
-        status: "success",
-        authenticated: true,
-      });
+      axios
+        .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${response.data.access_token}`,
+          },
+        })
+        .then((resp) => {
+          console.log(resp.data.role);
+          cookies.set("role", resp.data.role, {
+            httpOnly: true,
+            secure: process.env.ENABLE_SECURE_COOKIES === "true",
+            maxAge: 7 * 60 * 60 * 1000,
+            sameSite: "lax",
+          });
+
+          return res.status(200).json({
+            status: "success",
+            authenticated: true,
+          });
+        });
     })
     .catch(() => {
       return res.status(401).json({

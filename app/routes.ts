@@ -3,26 +3,25 @@ const BOTTOM_NAV_ROUTES = [
     href: "/",
     name: "Home",
     icon: "dashboard",
+    show: () => true,
   },
-  // {
-  //   href: "/forum",
-  //   name: "Forum",
-  //   icon: "forum",
-  // },
+  {
+    href: "/lab",
+    name: "Lab",
+    icon: "forum",
+    show: (role) => role === "ADMIN",
+  },
   {
     href: "/team",
     name: "Team",
     icon: "team",
+    show: () => true,
   },
-  // {
-  //   href: "/chat",
-  //   name: "Chat",
-  //   icon: "chat",
-  // },
   {
     href: "/profile",
     name: "Profile",
     icon: "profile",
+    show: () => true,
   },
 ];
 

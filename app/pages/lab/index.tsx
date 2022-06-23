@@ -1,9 +1,10 @@
 import { Box, Button } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
+import DefaultLayout from "components/Layouts/DefaultLayout";
 
 const Lab = () => {
   return (
-    <>
+    <DefaultLayout title="Lab">
       <div className="p-8">
         <h1 className="text-3xl font-black text-[#FF3DE0]">
           RPLGBT Laboratory
@@ -44,7 +45,7 @@ const Lab = () => {
           <h1 className="px-8">Jeki Mahadika Gunarto</h1>
         </div>
       </div>
-    </>
+    </DefaultLayout>
   );
 };
 

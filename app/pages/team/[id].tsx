@@ -12,24 +12,27 @@ import {
 import CommonTab from "components/CommonTab";
 import Fallback from "components/Fallback";
 import useTeam from "hooks/useTeam";
+import withAuth from "lib/withAuth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TeamType } from "types";
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
   return {
     props: {
-      token: token ? token : null,
+      config: token ? { token, role } : null,
     },
   };
-};
+});
 
-const DetailCompetition = ({ token }) => {
+const DetailCompetition = ({ config }) => {
   const router = useRouter();
   const { id } = router.query;
   const { team, error, requestJoin, loading } = useTeam<TeamType>(
-    token,
+    config?.token,
     id as string
   );
 

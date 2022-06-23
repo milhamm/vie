@@ -6,17 +6,19 @@ import ProfileContainer from "components/ProfileContainer";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
+  const role = ctx.req.cookies.role;
+
   return {
     props: {
-      token,
+      config: { token, role },
     },
   };
 });
 
-const Profile = ({ token }) => {
+const Profile = ({ config }) => {
   return (
     <DefaultLayout title="Profile">
-      <ProfileContainer token={token} editable={true} id={null} />
+      <ProfileContainer token={config.token} editable={true} id={null} />
     </DefaultLayout>
   );
 };
