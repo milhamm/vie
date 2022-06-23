@@ -19,9 +19,8 @@ import { capitalizeFirstLetter } from "lib/capitalize";
 const ProfileContainer = ({ token, editable, id }) => {
   const { user, team } = useProfile(token, id);
 
-  const splittedSkill = user.skills
-    .split(",")
-    .map((val) => capitalizeFirstLetter(val));
+  const splittedSkill =
+    user && user.skills.split(",").map((val) => capitalizeFirstLetter(val));
 
   return (
     <>
@@ -114,16 +113,17 @@ const ProfileContainer = ({ token, editable, id }) => {
             </TabPanel>
             <TabPanel>
               <div className="grid grid-cols-1 divide-y">
-                {splittedSkill.map((skill) => (
-                  <Flex
-                    key={skill}
-                    minWidth="max-content"
-                    alignItems="center"
-                    gap="2"
-                  >
-                    <h1 className="pt-4 pb-4">{skill}</h1>
-                  </Flex>
-                ))}
+                {splittedSkill &&
+                  splittedSkill.map((skill) => (
+                    <Flex
+                      key={skill}
+                      minWidth="max-content"
+                      alignItems="center"
+                      gap="2"
+                    >
+                      <h1 className="pt-4 pb-4">{skill}</h1>
+                    </Flex>
+                  ))}
               </div>
             </TabPanel>
             <TabPanel>
