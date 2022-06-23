@@ -31,10 +31,10 @@ export const getServerSideProps = withAuth(async (ctx) => {
 const DetailCompetition = ({ config }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { team, error, requestJoin, loading } = useTeam<TeamType>(
-    config?.token,
-    id as string
-  );
+  const { team, error, requestJoin, loading } = useTeam<TeamType>({
+    token: config?.token,
+    id: id as string,
+  });
 
   if (error) {
     return (
