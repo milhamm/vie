@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+
 import { JWTGuard } from '../auth/guards/jwt.guard';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from './user.service';
@@ -78,8 +78,6 @@ export class UserController {
   @Post('register')
   async register(@Body() data: Prisma.UsersCreateInput) {
     try {
-      const salt = await bcrypt.genSalt(10);
-      data.password = await bcrypt.hash(data.password, salt);
       const user = await this.userService.register(data);
       return user;
     } catch (error) {
