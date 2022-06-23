@@ -14,8 +14,11 @@ const useTeam = <T>(token?: string, id?: string) => {
   const createTeam = async (data) => {
     try {
       const response = await api.post("/team", data, config);
-      console.log({ response });
-    } catch (error) {}
+      mutate();
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject();
+    }
   };
 
   const requestJoin = async () => {
@@ -30,12 +33,26 @@ const useTeam = <T>(token?: string, id?: string) => {
     setLoading(false);
   };
 
+  const addHistory = async (payload) => {
+    setLoading(true);
+    try {
+      const response = await api.post(`/user/history`, payload, config);
+      console.log(response);
+      return Promise.resolve();
+    } catch (error) {
+      console.log(error);
+      return Promise.reject();
+    }
+    setLoading(false);
+  };
+
   return {
     team: data,
     error,
     createTeam,
     requestJoin,
     loading,
+    addHistory,
   };
 };
 

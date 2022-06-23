@@ -24,7 +24,11 @@ export class UserService {
     return this.prisma.users.findFirst({
       where,
       include: {
-        history: false,
+        history: {
+          orderBy: {
+            created_at: 'desc',
+          },
+        },
       },
     });
   }
@@ -35,6 +39,9 @@ export class UserService {
 
   async getOwnTeam(id: string) {
     const response = await this.prisma.team.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
       where: {
         TeamMember: {
           some: {
@@ -44,6 +51,14 @@ export class UserService {
                 not: 1,
               },
             },
+          },
+        },
+      },
+      include: {
+        competition: true,
+        TeamMember: {
+          where: {
+            status: 2,
           },
         },
       },

@@ -14,6 +14,7 @@ import useProfile from "hooks/useProfile";
 import CommonTab from "components/CommonTab";
 import HistoryCard from "components/HistoryCard";
 import Link from "next/link";
+import TeamCard from "components/TeamCard";
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const token = ctx.req.cookies.token;
@@ -25,7 +26,9 @@ export const getServerSideProps = withAuth(async (ctx) => {
 });
 
 const Profile = ({ token }) => {
-  const { user } = useProfile(token);
+  const { user, team } = useProfile(token);
+
+  console.log({ team });
 
   return (
     <DefaultLayout title="Profile">
@@ -88,22 +91,43 @@ const Profile = ({ token }) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <div className="flex justify-center h-[200px] items-center">
-                {user?.history && user.history.length > 0
-                  ? user.history.map((h) => (
-                      <HistoryCard
-                        name={h.name}
-                        role={h.role}
-                        key={h.id}
-                        status={h.status}
-                      />
-                    ))
-                  : "No History"}
+              <div>
+                <div className="flex justify-end h-[50px]">
+                  <Link href="/profile/competition/add">
+                    <a>
+                      <Button background="main.500" color="white">
+                        + Add New
+                      </Button>
+                    </a>
+                  </Link>
+                </div>
+                <div className="flex justify-center items-center flex-col">
+                  {user?.history && user.history.length > 0
+                    ? user.history.map((h) => (
+                        <HistoryCard
+                          name={h.name}
+                          role={h.role}
+                          key={h.id}
+                          status={h.status}
+                        />
+                      ))
+                    : "No History"}
+                </div>
               </div>
             </TabPanel>
             <TabPanel>Skill</TabPanel>
             <TabPanel>Portofolio</TabPanel>
-            <TabPanel>My Team</TabPanel>
+            <TabPanel>
+              <div>
+                {team && team.length > 0
+                  ? team.map((h) => (
+                      <div className="mb-4" key={h.id}>
+                        <TeamCard data={h} />
+                      </div>
+                    ))
+                  : "No Team"}
+              </div>
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </div>

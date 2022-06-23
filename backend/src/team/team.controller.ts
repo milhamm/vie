@@ -26,7 +26,7 @@ export class TeamController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  createTeam(@Body() data: Prisma.TeamCreateInput, @Req() req) {
+  createTeam(@Body() data, @Req() req) {
     return this.teamService.createTeam(data, req.user.id);
   }
 

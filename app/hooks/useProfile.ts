@@ -1,5 +1,6 @@
 import api, { fetcher, headerAuth } from "client/api";
 import useSWR from "swr";
+import { TeamType } from "types";
 
 type ProfileResponse = {
   academic_year: string;
@@ -24,8 +25,13 @@ type ProfileResponse = {
 const useProfile = (token: string) => {
   const config = headerAuth(token);
 
-  const { data, error } = useSWR<ProfileResponse>(
+  const { data: profileData, error: profileError } = useSWR<ProfileResponse>(
     ["/user/profile", config],
+    fetcher
+  );
+
+  const { data: teamsData, error: teamsError } = useSWR<Array<TeamType>>(
+    ["/user/teams", config],
     fetcher
   );
 
@@ -38,8 +44,9 @@ const useProfile = (token: string) => {
   };
 
   return {
-    user: data,
-    error,
+    user: profileData,
+    error: profileError,
+    team: teamsData,
     addHistory,
   };
 };

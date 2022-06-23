@@ -7,9 +7,19 @@ export class TeamService {
   constructor(private prisma: PrismaService) {}
 
   async createTeam(data, user_id: string) {
+    const competitionData = data.competition;
+
+    const competition = await this.prisma.competition.create({
+      data: {
+        ...competitionData,
+      },
+    });
+
+    const teamData = { ...data.team, competition_id: competition.id };
+
     return this.prisma.team.create({
       data: {
-        ...data,
+        ...teamData,
         leader_id: user_id,
         TeamMember: {
           create: {
