@@ -1,7 +1,11 @@
 import { BellIcon } from "@chakra-ui/icons";
-import { Icon, Text } from "@chakra-ui/react";
+import { Icon, Slider, Text } from "@chakra-ui/react";
+import HomeCarousel from "components/HomeCarousel";
 import DefaultLayout from "components/Layouts/DefaultLayout";
+import TeamCard from "components/TeamCard";
+import useTeam from "hooks/useTeam";
 import Link from "next/link";
+import { TeamType } from "types";
 
 export const getServerSideProps = async (ctx) => {
   const role = ctx.req.cookies.role;
@@ -14,6 +18,8 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Home = ({ config }) => {
+  const { team } = useTeam<Array<TeamType>>({ token: config.token });
+
   return (
     <DefaultLayout title="Vie" role={config.role}>
       <div>
@@ -28,22 +34,28 @@ const Home = ({ config }) => {
           </Link>
         </div>
         <div className="px-6 mt-[-4rem] flex flex-col items-between">
-          <div className="bg-indigo-300 h-[141px] w-full rounded-lg  "></div>
-          <div className="gap-3 mt-3 flex justify-center">
-            <div className="bg-red-500 h-[15px] w-[15px] rounded-full "></div>
-            <div className="bg-red-500 h-[15px] w-[15px] rounded-full "></div>
-          </div>
-          <div className="mt-5 flex justify-between ">
+          <HomeCarousel />
+          <div className="mt-[3rem] flex justify-between ">
             <Text fontSize={15} fontWeight="800" color="Grey">
               Team Recomendation
             </Text>
-
-            <Text fontSize={15} fontWeight="400" color="Grey">
-              Show All
-            </Text>
+            <Link href="/team">
+              <a>
+                <Text fontSize={15} fontWeight="400" color="Grey">
+                  Show All
+                </Text>
+              </a>
+            </Link>
           </div>
         </div>
-        <div className="mt-4 flex flex-col gap-4"></div>
+        <div className="mt-4 flex flex-col gap-4">
+          {team &&
+            team.slice(0, 3).map((val) => (
+              <div key={val.id}>
+                <TeamCard data={val} />
+              </div>
+            ))}
+        </div>
       </div>
     </DefaultLayout>
   );
