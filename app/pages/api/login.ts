@@ -10,6 +10,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     password: req.body.password,
   };
 
+  console.log({ payload });
+
   return axios
     .post(`${process.env.BASE_URL}/user/login`, payload)
     .then((response) => {
@@ -41,7 +43,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
         });
     })
-    .catch(() => {
+    .catch((e) => {
+      console.log(e);
       return res.status(401).json({
         message: "unauthorized",
         authenticated: false,

@@ -12,6 +12,7 @@ export const internalAPI = axios.create({
 });
 
 export const headerAuth = (token: string) => {
+  console.log(token);
   if (token) {
     return {
       headers: {

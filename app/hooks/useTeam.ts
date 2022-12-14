@@ -30,6 +30,7 @@ const useTeam = <T>(
 
   const createTeam = async (data) => {
     try {
+      console.log({ config });
       const response = await api.post("/team", data, config);
       mutate();
       return Promise.resolve();

@@ -26,7 +26,8 @@ export const getServerSideProps = withAuth(async (ctx) => {
   };
 });
 const CreateTeamPage = ({ config }) => {
-  const { createTeam, loading } = useTeam(config.token);
+  console.log(config);
+  const { createTeam, loading } = useTeam({ token: config.token });
   const toast = useToast();
   const router = useRouter();
 
